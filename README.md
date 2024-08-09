@@ -243,8 +243,8 @@ The project structure at this point:
 Now that you have all the basics of the app, try to implement the following:
 
 ### Update Item
-* Add a 'Update' button close to each item in `items.html`.
-* Create a `update.html` file with a form allowing to update the item.
+* Add an 'Update' button close to each item in `items.html`.
+* Create the `update.html` file with a form allowing to update the item.
 * Write the `update()` function in `todo_app.py`.
 
 ### Delete Item
