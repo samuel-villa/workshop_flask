@@ -2,15 +2,18 @@
 ## Install Python
 The commands to install Python are very simple, you can refer to this doc: https://www.python.org/downloads/
 
-* To check if Python has been installed correctly: `python3 --version`
+* To check if Python has been installed correctly: `python3 --version` (or `python --version`)
+
+## Create your project
+* Create a new folder and access it via VS Code
 
 ## Virtual environment
-
 ### Create a virtual environment
-* `python3 -m venv .venv`
+* `python3 -m venv .venv` (or `python -m venv .venv`)
 
 ### Activate the virtual environment
 * `. .venv/bin/activate`
+* `.venv\Scripts\activate`
 
 If the virtual environment is activated its name should appear in front of your command prompt like so:
 
@@ -66,7 +69,10 @@ Because returning HTML directly from a Python function is not very optimal we ca
 
 ### Update code
 
-* In `homepage.py` import the `render_template` method;
+* In `homepage.py` import the `render_template` method:
+```python
+from flask import Flask, render_template
+```
 * Also, update the `home()` function in order render our HTML file using `render_template()`:
 
 ```python
