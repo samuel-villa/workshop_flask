@@ -5,8 +5,8 @@
 {% endblock %}
 
 {% block content %}
-<div>
-    <a class="action" href="{{ url_for('create')}}">Add New Item</a>
+  <div>
+      <a class="action" href="{{ url_for('create')}}">Add New Item</a>
   </div>
   {% for item in items %}
   <article class="item">
