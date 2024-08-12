@@ -70,7 +70,9 @@ This is our first route, when we'll browse our application at its root (`@app.ro
 ### Run the server
 In your terminal type the following command: 
 
-`flask --app todo_app run`
+`flask --app todo_app --debug run`
+
+The `--debug` instruction allows to avoid having to restart the server every time we apply changes in the code.
 
 You can now visit [http://127.0.0.1:5000](http://127.0.0.1:5000) in your browser.
 
