@@ -84,7 +84,7 @@ Because returning HTML directly from a Python function is not very optimal we ca
 
 ### Update project structure
 At the root of the project create a `templates/` directory.  
-Within `templates/` create this `base.html` file:
+Within `templates/` create this `base.j2` file:
 
 ```html
 <!doctype html>
@@ -105,7 +105,7 @@ Also, update the `index()` function in order to render our HTML file using `rend
 ```python
 @app.route('/')
 def index():
-    return render_template('base.html')
+    return render_template('base.j2')
 ```
 
 At this point, your project structure should look like this:
@@ -113,7 +113,7 @@ At this point, your project structure should look like this:
 ```
 ├── .venv
 ├── templates
-│   └── base.html
+│   └── base.j2
 └── todo_app.py
 ```
 You can <u>restart the server</u> and visit [http://127.0.0.1:5000](http://127.0.0.1:5000) again to see the changes. You should still see the "Hello World" message but the main difference is that now we're rendering a HTML file instead of a simple string.
@@ -133,15 +133,15 @@ items = [
 ]
 ```
 Now we can pass the `items` list in the "context" of our `index()` function.  
-We will also replace the name of the html file passed by `items.html` (we will create this file in the next step):
+We will also replace the name of the html file passed by `items.j2` (we will create this file in the next step):
 
 ```python
 @app.route('/')
 def index():
-    return render_template('items.html', items=items)
+    return render_template('items.j2', items=items)
 ```
 
-Let's replace the `base.html` content with this code:
+Let's replace the `base.j2` content with this code:
 ```html
 <!doctype html>
 <title>{% block title %}{% endblock %} - ToDo App</title>
@@ -160,12 +160,12 @@ Let's replace the `base.html` content with this code:
 </section>
 ```
 
-This represent our base HTML structure that will be implemented by all HTML files. All blocks content (`{% block <name> %}`) will be replaced by the content of all HTML files that <u>extend</u> `base.html` file.  
+This represent our base HTML structure that will be implemented by all HTML files. All blocks content (`{% block <name> %}`) will be replaced by the content of all HTML files that <u>extend</u> `base.j2` file.  
 NOTE: Flask uses the [Jinja template engine](https://jinja.palletsprojects.com/) that is very similar to "blade" in Laravel.
 
-In `templates/`, let's create `items.html`:
+In `templates/`, let's create `items.j2`:
 ```html
-{% extends 'base.html' %}
+{% extends 'base.j2' %}
 
 {% block header %}
   <h1>{% block title %}Items{% endblock %}</h1>
@@ -189,14 +189,14 @@ In `templates/`, let's create `items.html`:
 ```
 
 Here we can notice a few things: 
-* How this file "extends" from `base.html`, this will tell Flask to replace all blocks content with the ones in `items.html`.  
+* How this file "extends" from `base.j2`, this will tell Flask to replace all blocks content with the ones in `items.j2`.  
 * How we can pass a route function in the `<a>` element (we will create the `create()` function in the next step)
 * The implementation of a for loop that iterates through the items of the list we've passed to the context of `index()` function.
 
-Let's also create a `create.html` file the same way we've created `items.html`:
+Let's also create a `create.j2` file the same way we've created `items.j2`:
 
 ```html
-{% extends 'base.html' %}
+{% extends 'base.j2' %}
 
 {% block header %}
   <h1>{% block title %}New ToDo Item{% endblock %}</h1>
@@ -223,19 +223,19 @@ def create():
     if request.method == 'POST':
         todo_item = request.form['new_item']
         items.append(todo_item)
-        return render_template('items.html', items=items)
-    return render_template('create.html')
+        return render_template('items.j2', items=items)
+    return render_template('create.j2')
 ```
 
-This routing function accepts two methods (`GET` and `POST`), if the method selected is `POST` we'll add a new item to the `items` list and then browse back to `items.html`. If the method is `GET` we'll be directed to `create.html` (See `items.html`).
+This routing function accepts two methods (`GET` and `POST`), if the method selected is `POST` we'll add a new item to the `items` list and then browse back to `items.j2`. If the method is `GET` we'll be directed to `create.j2` (See `items.j2`).
 
 The project structure at this point:
 ```
 ├── .venv
 ├── templates
-│   ├── base.html
-│   ├── create.html
-│   └── items.html
+│   ├── base.j2
+│   ├── create.j2
+│   └── items.j2
 └── todo_app.py
 ```
 
@@ -245,12 +245,12 @@ The project structure at this point:
 Now that you have all the basics of the app, try to implement the following:
 
 ### Update Item
-* Add an 'Update' button close to each item in `items.html`.
-* Create the `update.html` file with a form allowing to update the item.
+* Add an 'Update' button close to each item in `items.j2`.
+* Create the `update.j2` file with a form allowing to update the item.
 * Write the `update()` function in `todo_app.py`.
 
 ### Delete Item
-* Add a 'Delete' button close to each item in `items.html`.
+* Add a 'Delete' button close to each item in `items.j2`.
 * Write the `delete()` function in `todo_app.py`.
 
 Here some doc links that might be helpul:
