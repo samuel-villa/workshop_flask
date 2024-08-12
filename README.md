@@ -12,7 +12,7 @@ MacOS, Linux: `python3 --version`
 Windows: `python --version`
 
 ## Create your project
-Let's create a new directory that will be our root work directory (ex: `_workshop/`).
+Let's create a new directory that will be our root work directory (ex: `flask_workshop/`).
 
 ### Virtual environment
 In Python, it's good practice to set up a "virtual environment" for each project. This will isolate project dependencies, ensuring that different projects can have different versions of packages installed without conflicts.
@@ -84,8 +84,8 @@ Because returning HTML directly from a Python function is not very optimal we ca
 
 ### Update project structure
 At the root of the project create a `templates/` directory.
-Flask uses the [Jinja template engine](https://jinja.palletsprojects.com/) that is very similar to "blade" in Laravel.
-Note : I recommend installing "Better Jinja" on VS Code to get syntax highlighting.
+Flask uses the [Jinja template engine](https://jinja.palletsprojects.com/) that is very similar to "blade" in Laravel. With Jinja the html files will have the extension `.j2`.  
+Note: I recommend installing "Better Jinja" extension on VS Code to get syntax highlighting.
 
 Within `templates/` create this `base.j2` file:
 
@@ -119,7 +119,7 @@ At this point, your project structure should look like this:
 │   └── base.j2
 └── todo_app.py
 ```
-You can <u>restart the server</u> and visit [http://127.0.0.1:5000](http://127.0.0.1:5000) again to see the changes. You should still see the "Hello World" message but the main difference is that now we're rendering a HTML file instead of a simple string.
+You can visit [http://127.0.0.1:5000](http://127.0.0.1:5000) again to see the changes (<u>refresh the page</u>). You should still see the "Hello World" message but the main difference is that now we're rendering a HTML file instead of a simple string.
 
 ## ToDo App
 Now that we can render HTML files we can go a little further and implement our application.
@@ -145,7 +145,7 @@ def index():
 ```
 
 Let's replace the `base.j2` content with this code:
-```html
+```jinja
 <!doctype html>
 <title>{% block title %}{% endblock %} - ToDo App</title>
 <nav>
@@ -167,7 +167,7 @@ This represent our base HTML structure that will be implemented by all HTML(.j2)
 
 
 In `templates/`, let's create `items.j2`:
-```html
+```jinja
 {% extends 'base.j2' %}
 
 {% block header %}
@@ -198,7 +198,7 @@ Here we can notice a few things:
 
 Let's also create a `create.j2` file the same way we've created `items.j2`:
 
-```html
+```jinja
 {% extends 'base.j2' %}
 
 {% block header %}
@@ -232,16 +232,50 @@ def create():
 
 This routing function accepts two methods (`GET` and `POST`), if the method selected is `POST` we'll add a new item to the `items` list and then browse back to `items.j2`. If the method is `GET` we'll be directed to `create.j2` (See `items.j2`).
 
+The same way, we will create the 'Update' part of the code.
+
+First the html (jinja) file `update.j2`:
+
+```jinja
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}New ToDo Item{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="update_item">Update Item:</label>
+    <input name="update_item" value="{{ item }}">
+    <input type="submit" value="Update">
+  </form>
+{% endblock %}
+```
+
+Then, we add the related method in `todo_app.py`:
+
+```python
+@app.route('/update/<int:item_id>', methods=('GET', 'POST'))
+def update(item_id):
+    if request.method == 'POST':
+        updated_item = request.form['update_item']
+        items[item_id] = updated_item
+        return render_template('items.j2', items=items)
+    return render_template('update.j2', item=items[item_id], item_id=item_id)
+```
+
 The project structure at this point:
 ```
 ├── .venv
 ├── templates
 │   ├── base.j2
 │   ├── create.j2
-│   └── items.j2
+│   ├── items.j2
+│   └── update.j2
 └── todo_app.py
 ```
 
+<u>Done! you can test the application!</u>
 
 ## Challenge - Your Turn to Code
 Now that you have all the basics of the app, try to implement the following:
@@ -250,7 +284,7 @@ Now that you have all the basics of the app, try to implement the following:
 * Add a 'Delete' button close to each item in `items.j2`.
 * Write the `delete()` function in `todo_app.py`.
 
-Here some doc links that might be helpul:
+Here some doc links that might be helpful:
 * [W3s Python tutorial](https://www.w3schools.com/python/)
 * [Flask doc](https://flask.palletsprojects.com/en/3.0.x/)
 
@@ -258,4 +292,3 @@ Here some doc links that might be helpul:
 For those who are interested, we've created another branch in this repo that implements this same ToDo App connected to a Database.  
 We've used [SQLite](https://docs.python.org/3/library/sqlite3.html) that is already provided by Python.
 The code is simplified and straight forward, the main goal is just to give you the basics to show you how to connect a DB with a Flask application and perform basic SQL operations.
-
