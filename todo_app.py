@@ -1,37 +1,43 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
+import sqlite3
 
 app = Flask(__name__)
 
-# Step 1
-# @app.route("/")
-# def homepage():
-#     return "<p>Hello, World!</p>"
+DB_NAME = 'todo.db'
 
 
-# Step 2
-# @app.route('/')
-# @app.route('/<name>')
-# def home(name=None):
-#     return render_template('main.html', person=name)
+def create_database():
+    conn = sqlite3.connect(DB_NAME)
+    c = conn.cursor()
+    c.execute('''CREATE TABLE IF NOT EXISTS items (id INTEGER PRIMARY KEY, task TEXT)''')
+    conn.commit()
+    conn.close()
 
-items = [
-    'Buy Food',
-    'Go to Gym',
-    'Watch Movie'
-]
-
-# @app.route('/')
-# def home():
-#     return render_template('base.html')
 
 @app.route('/')
 def index():
+    conn = sqlite3.connect(DB_NAME)
+    c = conn.cursor()
+    c.execute('SELECT * FROM items')
+    items = c.fetchall()
+    conn.close()
     return render_template('items.html', items=items)
+
 
 @app.route('/create', methods=('GET', 'POST'))
 def create():
     if request.method == 'POST':
         todo_item = request.form['new_item']
-        items.append(todo_item)
-        return render_template('items.html', items=items)
+
+        conn = sqlite3.connect(DB_NAME)
+        c = conn.cursor()
+        c.execute('INSERT INTO items (task) VALUES (?)', (todo_item,))
+        conn.commit()
+        conn.close()
+        return redirect(url_for('index'))
     return render_template('create.html')
+
+
+if __name__ == '__main__':
+    create_database()
+    app.run(debug=True)
