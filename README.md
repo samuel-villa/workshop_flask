@@ -239,15 +239,9 @@ The project structure at this point:
 └── todo_app.py
 ```
 
-<u>Restart the server</u> and visit [http://127.0.0.1:5000](http://127.0.0.1:5000)
 
-## Your Turn to Code
+## Challenge - Your Turn to Code
 Now that you have all the basics of the app, try to implement the following:
-
-### Update Item
-* Add an 'Update' button close to each item in `items.html`.
-* Create the `update.html` file with a form allowing to update the item.
-* Write the `update()` function in `todo_app.py`.
 
 ### Delete Item
 * Add a 'Delete' button close to each item in `items.html`.
@@ -256,3 +250,9 @@ Now that you have all the basics of the app, try to implement the following:
 Here some doc links that might be helpul:
 * [W3s Python tutorial](https://www.w3schools.com/python/)
 * [Flask doc](https://flask.palletsprojects.com/en/3.0.x/)
+
+## DB implementation (Bonus)
+For those who are interested, we've created another branch in this repo that implements this same ToDo App connected to a Database.  
+We've used [SQLite](https://docs.python.org/3/library/sqlite3.html) that is already provided by Python.
+The code is simplified and straight forward, the main goal is just to give you the basics to show you how to connect a DB with a Flask application and perform basic SQL operations.
+
