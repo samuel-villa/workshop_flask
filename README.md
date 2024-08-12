@@ -12,7 +12,7 @@ MacOS, Linux: `python3 --version`
 Windows: `python --version`
 
 ## Create your project
-Let's create a new directory that will be our root work directory (ex: `flask_workshop/`).
+Let's create a new directory that will be our root work directory (ex: `_workshop/`).
 
 ### Virtual environment
 In Python, it's good practice to set up a "virtual environment" for each project. This will isolate project dependencies, ensuring that different projects can have different versions of packages installed without conflicts.
@@ -83,7 +83,10 @@ If 'Hello World' is rendered correctly, we can pass to the next step where we ca
 Because returning HTML directly from a Python function is not very optimal we can start rendering HTML pages using templates.
 
 ### Update project structure
-At the root of the project create a `templates/` directory.  
+At the root of the project create a `templates/` directory.
+Flask uses the [Jinja template engine](https://jinja.palletsprojects.com/) that is very similar to "blade" in Laravel.
+Note : I recommend installing "Better Jinja" on VS Code to get syntax highlighting.
+
 Within `templates/` create this `base.j2` file:
 
 ```html
@@ -160,8 +163,8 @@ Let's replace the `base.j2` content with this code:
 </section>
 ```
 
-This represent our base HTML structure that will be implemented by all HTML files. All blocks content (`{% block <name> %}`) will be replaced by the content of all HTML files that <u>extend</u> `base.j2` file.  
-NOTE: Flask uses the [Jinja template engine](https://jinja.palletsprojects.com/) that is very similar to "blade" in Laravel.
+This represent our base HTML structure that will be implemented by all HTML(.j2) files. All blocks content (`{% block <name> %}`) will be replaced by the content of all HTML files that <u>extend</u> `base.j2` file.  
+
 
 In `templates/`, let's create `items.j2`:
 ```html
