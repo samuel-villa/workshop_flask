@@ -264,6 +264,34 @@ def update(item_id):
     return render_template('update.j2', item=items[item_id], item_id=item_id)
 ```
 
+Finally we will add the buttons that will trigger these functions in `items.j2`:
+
+```jinja
+{% extends 'base.j2' %}
+
+{% block header %}
+  <h1>{% block title %}Items{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <div>
+      <a class="action" href="{{ url_for('create')}}">Add New Item</a>
+  </div>
+  {% for item in items %}
+  <article class="item">
+    <div style="display:flex;justify-content:center;align-items:center;margin-block:auto;gap:20px;">
+      <p class="body">{{ item }}</p>
+      <a style="background-color:rgb(164, 255, 240);border-radius:10px;padding:4px" class="action" href="{{ url_for('update', item_id=loop.index0) }}">Update</a>
+    </div>
+  </article>
+    {% if not loop.last %}
+      <hr>
+    {% endif %}
+  {% endfor %}
+{% endblock %}
+
+```
+
 The project structure at this point:
 ```
 ├── .venv
